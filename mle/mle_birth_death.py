@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 MLE for Birth-Death Trees 
 
@@ -453,8 +452,8 @@ def main():
             continue
         
         true_R0 = true_row['R'].values[0]
-        true_d = true_row['d'].values[0]
-        true_lambda = true_R0 * true_d
+        true_mu = true_row['d'].values[0]
+        true_lambda = true_R0 * true_mu
         n_tips = int(true_row['tips'].values[0])
         
         # Load tree
@@ -470,7 +469,7 @@ def main():
             'tree_idx': tree_idx,
             'n_tips': n_tips,
             'true_R0': true_R0,
-            'true_d': true_d,
+            'true_mu': true_mu,
             'true_lambda': true_lambda,
             'mle_R0': R0_mle if R0_mle is not None else np.nan,
             'mle_mu': mu_mle if mu_mle is not None else np.nan,
@@ -499,7 +498,7 @@ def main():
         print(f"  Mean: {results_df['mle_R0'].mean():.4f}")
         print(f"  Std: {results_df['mle_R0'].std():.4f}")
         print(f"  Range: [{results_df['mle_R0'].min():.4f}, {results_df['mle_R0'].max():.4f}]")
-        print(f"\nMLE d (μ) statistics:")
+        print(f"\nMLE mu (μ) statistics:")
         print(f"  Mean: {results_df['mle_mu'].mean():.4f}")
         print(f"  Std: {results_df['mle_mu'].std():.4f}")
         print(f"  Range: [{results_df['mle_mu'].min():.4f}, {results_df['mle_mu'].max():.4f}]")
