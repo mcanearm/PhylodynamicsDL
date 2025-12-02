@@ -1,4 +1,4 @@
-tree_idx,n_tips,true_R0,true_d,true_lambda,mle_R0,mle_d,mle_lambda
+tree_idx,n_tips,true_R0,true_mu,true_lambda,mle_R0,mle_mu,mle_lambda
 0,285,1.43571,3.57143,5.1275377653,2.0,4.0372114510774315,8.074422902154863
 1,320,2.39145,3.28947,7.8666030314999995,2.0,5.0,10.0
 10,463,2.79359,3.55872,9.9416046048,2.0,5.0,10.0
