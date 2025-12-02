@@ -473,7 +473,7 @@ def main():
             'true_d': true_d,
             'true_lambda': true_lambda,
             'mle_R0': R0_mle if R0_mle is not None else np.nan,
-            'mle_d': mu_mle if mu_mle is not None else np.nan,
+            'mle_mu': mu_mle if mu_mle is not None else np.nan,
             'mle_lambda': lambda_mle if lambda_mle is not None else np.nan,
         }
         results.append(result)
@@ -500,9 +500,9 @@ def main():
         print(f"  Std: {results_df['mle_R0'].std():.4f}")
         print(f"  Range: [{results_df['mle_R0'].min():.4f}, {results_df['mle_R0'].max():.4f}]")
         print(f"\nMLE d (μ) statistics:")
-        print(f"  Mean: {results_df['mle_d'].mean():.4f}")
-        print(f"  Std: {results_df['mle_d'].std():.4f}")
-        print(f"  Range: [{results_df['mle_d'].min():.4f}, {results_df['mle_d'].max():.4f}]")
+        print(f"  Mean: {results_df['mle_mu'].mean():.4f}")
+        print(f"  Std: {results_df['mle_mu'].std():.4f}")
+        print(f"  Range: [{results_df['mle_mu'].min():.4f}, {results_df['mle_mu'].max():.4f}]")
     
     print(f"\nResults saved to: {output_file}")
     print("\nMLE estimation complete!")
