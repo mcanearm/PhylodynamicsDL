@@ -2,6 +2,7 @@
 % \documentclass[aspectratio=169]{beamer} % 16:9 widescreen
 
 \usepackage{hyperref}
+\usepackage{listings}
 \usepackage[T1]{fontenc}
 
 % other packages
@@ -71,6 +72,27 @@
         \item Given a tree, Phylodeep selects the pre-trained model with the highest probability
         \item Outputs actually come with uncertainty estimates from a parametric bootstrap
     \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Tree Generation}
+
+\begin{itemize}
+    \item Trees were generated in parallel using the `treesimulator` package
+    \item Explored Phylopomp for this, but format is slightly different and packages weren't quickly interoperable
+\end{itemize}
+
+
+
+\begin{lstlisting}
+# Generate a BD tree with 200-500 tips, 
+# transmission rate of 0.5, removal rate 
+# of 0.25 and sampling probability of 0.3
+generate_bd --min_tips 200 --max_tips 500 \
+  --la 0.5 --psi 0.25 --p 0.3 \ 
+  --nwk tree.nwk --log params.csv
+
+\end{lstlisting}
 \end{frame}
 
 
