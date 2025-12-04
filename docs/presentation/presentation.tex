@@ -99,8 +99,141 @@ generate_bd --min_tips 200 --max_tips 500 \
 \section{Methods}
 
 \subsection{MLE}
-\begin{frame}{Maximum Likelihood Estimation}
-    URVI TO FILL IN
+\begin{frame}{Maximum Likelihood Estimation: Overview}
+    \begin{itemize}
+        \item \textbf{Goal}: Estimate birth rate ($\lambda$) and death rate ($\mu$) from phylogenetic trees
+        \item \textbf{Method}: Numerical optimization of Stadler (2010) likelihood
+        \item \textbf{Key Feature}: Works with \textbf{tree data only} - no nucleotide sequences required
+        \item \textbf{Implementation}: Uses \texttt{scipy.optimize.minimize} with L-BFGS-B algorithm
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Advantages}:
+    \begin{itemize}
+        \item Statistically principled (maximum likelihood)
+        \item Works on small trees (no minimum tip size requirement)
+        \item Provides point estimates with optimization diagnostics
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Stadler (2010) Likelihood Formulation}
+    For a constant-rate birth-death process with sampling probability $\rho$:
+    
+    \begin{align*}
+        \ell(\lambda, \mu | T, \rho) &= (n-1) \log(\lambda) \\
+        &\quad - (\lambda + \mu) T_{\text{total}} \\
+        &\quad + n \log(\rho) \\
+        &\quad - r \cdot T + \text{penalty terms}
+    \end{align*}
+    
+    where:
+    \begin{itemize}
+        \item $n$ = number of tips
+        \item $T_{\text{total}}$ = total branch length
+        \item $T$ = tree height (time from root to present)
+        \item $r = \lambda - \mu$ = net diversification rate
+        \item $\rho$ = sampling probability
+    \end{itemize}
+    
+    \vspace{0.2cm}
+    \textbf{Key insight}: Survival probability term ($-r \cdot T$) helps identify $\mu$ separately from $\lambda$
+\end{frame}
+
+\begin{frame}{MLE Implementation: Tree Statistics Extraction}
+    \textbf{Extracted from each tree}:
+    \begin{itemize}
+        \item Number of tips: $n$
+        \item Total branch length: $T_{\text{total}} = \sum_{e \in E} \ell(e)$
+        \item Tree height: $T = \max_{v \in V} d(\text{root}, v)$
+        \item Branching times: All internal node ages
+        \item Mean branch length: $\bar{\ell}$
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Initial parameter estimates} (method-of-moments):
+    \begin{align*}
+        \hat{r} &= \frac{\log(n)}{T} \\
+        \hat{\lambda} &= \frac{n-1}{T_{\text{total}}} \\
+        \hat{\mu} &= \max(0.01, \hat{\lambda} - \hat{r})
+    \end{align*}
+    
+    These serve as starting values for numerical optimization.
+\end{frame}
+
+\begin{frame}{MLE Implementation: Optimization}
+    \textbf{Numerical optimization}:
+    \begin{itemize}
+        \item \textbf{Algorithm}: L-BFGS-B (bounded optimization)
+        \item \textbf{Bounds}: $\lambda \in [0.01, 10.0]$, $\mu \in [0.01, 10.0]$
+        \item \textbf{Constraint}: $\mu < \lambda$ (enforced via penalty)
+        \item \textbf{Gradient}: Analytical gradient provided for faster convergence
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Gradient components}:
+    \begin{align*}
+        \frac{\partial \ell}{\partial \lambda} &= -\frac{n-1}{\lambda} + T_{\text{total}} + T \\
+        \frac{\partial \ell}{\partial \mu} &= T_{\text{total}} - T + \text{penalty term}
+    \end{align*}
+    
+    \vspace{0.2cm}
+    \textbf{Regularization}: Penalty term prevents $\mu$ from collapsing to lower bound in large trees
+\end{frame}
+
+\begin{frame}{MLE Implementation: Key Features}
+    \textbf{1. Survival Probability Term}
+    \begin{itemize}
+        \item Includes $-r \cdot T$ term to help identify $\mu$
+        \item Accounts for probability of observing $n$ tips given $\lambda$ and $\mu$
+        \item Critical for separating $\mu$ from $\lambda$ in the likelihood
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{2. Regularization for Large Trees}
+    \begin{itemize}
+        \item Penalty: $-0.1 \log(\mu)$ when $\mu < 0.1$ and $n > 10$
+        \item Prevents $\mu$ from getting stuck at lower bound (0.01)
+        \item Encourages realistic death rate estimates based on tree size
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{3. Robust Error Handling}
+    \begin{itemize}
+        \item Checks for invalid trees ($n \leq 1$, $T_{\text{total}} \leq 0$)
+        \item Handles optimization failures gracefully
+        \item Returns success status, log-likelihood, and iteration count
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{4. Method-of-Moments Initialization}
+    \begin{itemize}
+        \item Smart starting values: $\hat{r} = \log(n)/T$, $\hat{\lambda} = (n-1)/T_{\text{total}}$
+        \item Ensures faster convergence and avoids local minima
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{MLE: Advantages and Limitations}
+    \textbf{Advantages}:
+    \begin{itemize}
+        \item Statistically principled (maximum likelihood)
+        \item No minimum tree size requirement
+        \item Works on small trees ($n < 50$)
+        \item Provides optimization diagnostics
+        \item Fast computation (seconds per tree)
+        \item Based on well-established Stadler (2010) theory
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Limitations}:
+    \begin{itemize}
+        \item Higher RMSE than PhyloDeep on large trees
+        \item Point estimates only (no uncertainty quantification)
+        \item Requires careful initialization for convergence
+        \item Can struggle with very large trees ($n > 500$)
+    \end{itemize}
+    
+    \vspace{0.2cm}
+    \textbf{Best use case}: Small to medium trees where statistical rigor is important
 \end{frame}
 
 \subsection{Phylodeep}
