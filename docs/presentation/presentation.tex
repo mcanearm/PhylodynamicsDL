@@ -6,12 +6,16 @@
 
 % other packages
 \usepackage{latexsym,amsmath,xcolor,multicol,booktabs,calligra}
+\usepackage{biblatex}
 \usepackage{graphicx,pstricks,listings,stackengine}
 
-\author{Author}
-\title{Beamer Theme Template}
-\subtitle{Subtitle}
-\institute{Institute}
+\addbibresource{refs.bib}
+
+% \author{Santosh Desai, and Matt McAnear, Urvi Mehta}
+\author{Santosh Desai, Matt McAnear, Urvi Mehta}
+\title{Statistical Efficiency of Birth-Death Tree Parameter Estimation}
+\subtitle{Stat 700}
+\institute{Department of Statistics, University of Michigan}
 \date{\today}
 
 % Remove this if you don't have a custom CNU.sty theme
@@ -38,101 +42,88 @@
 
 \begin{document}
 
-\begin{frame}
-    \titlepage
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=0.4\linewidth]{pic/logo.png} % rename your file accordingly
-    \end{figure}
-\end{frame}
 
 \begin{frame}
-    \tableofcontents[
-        sectionstyle=show,
-        subsectionstyle=show/shaded/hide,
-        subsubsectionstyle=show/shaded/hide
-    ]
+\maketitle
 \end{frame}
 
 
 \section{Background}
 
-\begin{frame}{Page Title}
-    \begin{itemize}[<+-| alert@+>]
-        \item Content
-        \item Content
-        \item Content
-    \end{itemize}
-\end{frame}
-
-
-\section{Research Content}
-
-\subsection{Subsection}
-
-\begin{frame}{Page Title}
+\begin{frame}{The Phylodeep Package}
+    Phylodeep Paper is byt J. Voznica et al \cite{voznica_deep_2022}
     \begin{itemize}
-        \item Content
-        \item Content
-        \item Content
-        \item Content
+        \item Parameter estimation is difficult and MLE method can be challenging for larger trees.
+        \item Major components of the paper to address this
+        \begin{itemize}
+            \item CBLV representation of trees
+            \item Pre-trained neural networks for pre-specified tree types
+        \end{itemize}
+        \item The goal is to speed up inference
     \end{itemize}
 \end{frame}
 
 
-\section{Related Work}
-
-\subsection{Subsection}
-
-\begin{frame}{Page Title}
+\begin{frame}{Usage}
     \begin{itemize}
-        \item Content
-        \item Content
-        \item Content
-        \item Content
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Page Title}
-    \begin{itemize}
-        \item Content
-        \item Content
-        \item Content
-        \item Content
-    \end{itemize}
-\end{frame}
-
-\subsection{Subsection 2}
-
-\begin{frame}{Page Title}
-    \begin{itemize}
-        \item Content
+        \item Input: Phylogenetic tree in Newick format
+        \item Output: Estimated parameters (e.g., birth rate ($\lambda$), death rate ($\mu$), $R_0$)
+        \item Given a tree, Phylodeep selects the pre-trained model with the highest probability
+        \item Outputs actually come with uncertainty estimates from a parametric bootstrap
     \end{itemize}
 \end{frame}
 
 
-\section{Timeline}
+\section{Methods}
 
-\begin{frame}{Timeline}
-    \begin{itemize}
-        \item Content
-    \end{itemize}
+\subsection{MLE}
+\begin{frame}{Maximum Likelihood Estimation}
+    URVI TO FILL IN
 \end{frame}
 
+\subsection{Phylodeep}
+\begin{frame}{Phylodeep Methodology}
+    SANTOSH TO FILL IN
+\end{frame}
+
+
+\section{Results}
+
+\subsection{RMSE}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=1.0\linewidth]{images/RMSE_vs_tips.png}
+        \caption[Figure 1]{Rolling bootstrapped RMSE estimates of $\mu$ and $\lambda$ by tree size and resulting 95\% CI. Window size is 500.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=1.0\linewidth]{images/estimation_error_vs_tips.png}
+        \caption[Short Title]{Raw plot of the absolute errors in $\lambda, \mu$ by tree size.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}
+        \includegraphics[width=0.8\linewidth]{images/lambda_vs_mu_estimates.png}
+        \caption{Plot of $\lambda$ vs $\mu$ estimates to show distribution of estimates.}
+    \end{figure}
+\end{frame}
+
+% \begin{frame}
+%     Main takeaways:
+%     \begin{itemize}
+%         \item RMSE decreases with increasing tree size for both methods.
+%         \item MLE can be used on smaller trees - Phylodeep requires a minimum tip size of around 50.
+%         \item Otherwise, Phylodeep has lower RMSE than MLE across most tree sizes on average.
+% \end{frame}
 
 \section{References}
 
 \begin{frame}{References}
-\begin{thebibliography}{99}
-    \bibitem{article1} Author,
-    \emph{Title}, Journal.
-\end{thebibliography}
-\end{frame}
-
-\begin{frame}
-    \begin{center}
-        {\Huge\calligra Thanks!}
-    \end{center}
+    \printbibliography
 \end{frame}
 
 \end{document}

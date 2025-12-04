@@ -80,20 +80,22 @@ tree_idx <- sapply(
 )
 names(all_trees) <- tree_idx
 
-results <- lapply(all_trees[1:100], function(f) {
+results <- lapply(all_trees[1:500], function(f) {
     nwk <- readLines(f, n = 1)
     result <- bd_mle(nwk, rho = 0.5, condition = "crown", method = "L-BFGS-B")
+    result$par
 })
+
+
+all_params <- do.call('rbind', results)
+
+hist(all_params[, 2])
 
 all_params <- read.csv("./all_params.csv")
 
 data.frame(
     t(sapply(results, function(res) res$par)),
     names = c("la_II_true", "psi_I_true")
-)
-
-merge(
-    all_params[, c("idx", "la_II", "psi_I")],
 )
 
 
