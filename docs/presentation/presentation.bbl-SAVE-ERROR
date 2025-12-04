@@ -1,0 +1,105 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{voznica_deep_2022}{article}{}
+      \name{author}{7}{}{%
+        {{hash=4ce4b0a439bd9b0b6a2fbca5d073c095}{%
+           family={Voznica},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=ce1d394b61a1aaebafc18873c5c8d4fe}{%
+           family={Zhukova},
+           familyi={Z\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=94a57e39c89f733a57bdbf28a1482233}{%
+           family={Boskova},
+           familyi={B\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=661259de470c536285cbf01ebfe8153b}{%
+           family={Saulnier},
+           familyi={S\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=b063b76c084b142af5421d84993938e9}{%
+           family={Lemoine},
+           familyi={L\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod}}}%
+        {{hash=5fc9b0c21101f2fbb3091af4c610b128}{%
+           family={Moslonka-Lefebvre},
+           familyi={M\bibinithyphendelim L\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=1e4fb66dd75e0d956e4abba8130dbd30}{%
+           family={Gascuel},
+           familyi={G\bibinitperiod},
+           given={O.},
+           giveni={O\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{1e29c1ebe9e53eab4b757457d7a17f10}
+      \strng{fullhash}{cb0d679ddebb9b49a57761458bbdb6f5}
+      \strng{bibnamehash}{1e29c1ebe9e53eab4b757457d7a17f10}
+      \strng{authorbibnamehash}{1e29c1ebe9e53eab4b757457d7a17f10}
+      \strng{authornamehash}{1e29c1ebe9e53eab4b757457d7a17f10}
+      \strng{authorfullhash}{cb0d679ddebb9b49a57761458bbdb6f5}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Widely applicable, accurate and fast inference methods in phylodynamics are needed to fully profit from the richness of genetic data in uncovering the dynamics of epidemics. Standard methods, including maximum-likelihood and Bayesian approaches, generally rely on complex mathematical formulae and approximations, and do not scale with dataset size. We develop a likelihood-free, simulation-based approach, which combines deep learning with (1) a large set of summary statistics measured on phylogenies or (2) a complete and compact representation of trees, which avoids potential limitations of summary statistics and applies to any phylodynamics model. Our method enables both model selection and estimation of epidemiological parameters from very large phylogenies. We demonstrate its speed and accuracy on simulated data, where it performs better than the state-of-the-art methods. To illustrate its applicability, we assess the dynamics induced by superspreading individuals in an HIV dataset of men-having-sex-with-men in Zurich. Our tool PhyloDeep is available on github.com/evolbioinfo/phylodeep.}
+      \field{issn}{2041-1723}
+      \field{journaltitle}{Nature Communications}
+      \field{month}{7}
+      \field{note}{Publisher: Nature Publishing Group}
+      \field{number}{1}
+      \field{title}{Deep learning from phylogenies to uncover the epidemiological dynamics of outbreaks}
+      \field{urlday}{4}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{volume}{13}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \field{pages}{3896}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/s41467-022-31511-0
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/Users/mmcanear/Zotero/storage/B2W47EA5/Voznica et al. - 2022 - Deep learning from phylogenies to uncover the epidemiological dynamics of outbreaks.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://www.nature.com/articles/s41467-022-31511-0
+      \endverb
+      \verb{url}
+      \verb https://www.nature.com/articles/s41467-022-31511-0
+      \endverb
+      \keyw{Machine learning,Phylogeny,Statistical methods,Viral infection}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
