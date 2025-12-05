@@ -2,9 +2,13 @@
 
 \usepackage{listings}
 \usepackage[margin=1in]{geometry}
-\usepackage{biblatex}
+\usepackage[backend=biber, style=numeric]{biblatex}
+
 \usepackage{graphicx}
 \usepackage{xcolor}
+
+
+\def\code#1{\texttt{#1}}
 
 \addbibresource{refs.bib}
 
@@ -26,21 +30,6 @@
 
 
 
-% \begin{filecontents}{refs.bib}
-% @article{voznica_deep_2022,
-%   author = {Voznica, Jana and Smith, John},
-%   title = {Phylodeep: Deep learning for parameter estimation in phylogenetics},
-%   journal = {Journal of Computational Phylogenetics},
-%   year = {2022},
-%   volume = {12},
-%   number = {3},
-%   pages = {123-136},
-% }
-% \end{filecontents}
-
-% \addbibresource{refs.bib}
-
-
 \title{Statistical Efficiency of Birth-Death Tree Parameter Estimation}
 \author{Santosh Desai \and Matt McAnear \and Urvi Mehta}
 
@@ -59,19 +48,17 @@ PhyloDeepPOMP: https://github.com/Horopter/PhyloDeepPOMP
 
 \section{Intro}
 
-\cite{voznica_deep_2022}
-
 The Phylodeep package implements a deep learning approach to estimating parameters of several different
 tree models. The results of the deep learning models are impressive, but noticeably absent from 
-the baseline of the models is the closed-form MLE for any of the simulated trees. For our study, we focused on 
-the Birth-Death trees and compared the statistical efficiency of
+the baseline methods is the closed-form MLE for any of the simulated trees. For our study, we focused on 
+the birth-death trees and compared the statistical efficiency of
 the Phylodeep approach to the traditional Maximum Likelihood Estimation (MLE) approach. Initial comparisons 
 indicated that there may be some issues with the likelihood estimation component, but we think the results
 are interesting enough to present, albeit with caveats.
 
 \section{Data Generation}
 
-The original paper by Voznicka et. al.%\cite{voznica_deep_2022} utilized a custom simulator to generate trees using a package by Zhukova et. al. %\cite{zhukova_evolbioinfotreesimulator_2025},
+The original paper by Voznica et al.\cite{voznica_deep_2022} utilized a custom simulator to generate trees using a package by Zhukova et al. \cite{zhukova_evolbioinfotreesimulator_2025},
 one of the other authors. We chose to replicate this process as faithfully as possible, both for 
 reasons of simplicity and reproducibility.
 
@@ -90,41 +77,38 @@ subprocess.run(
 )
 \end{lstlisting}
 
-This is identical to the process outlined in the Phylodeep 
-with the exception that we reduce the minimum tips to 10. Our random sampling of $\lambda$ and $\psi$ are between
-0 and 1. These ranges do not align with the Phlyodeep paper in the supplementary data, and
-we locked the sampling probability at 0.5 rather than sampling it as well. By focusing on 
-two parameters, we are simplifying our analysis further, which seemed reasonable given
-the timeframe of the project. However, 
+This is identical to the process outlined in Voznica et al. 
+with the exception that we reduce the minimum tips to 10. We randomly sample both $\lambda$ and $\psi$ from a Uniform(0, 1) distribution.
+These ranges do not align with the Voznica paper specifications listed in the supplementary data, but are easily modifiable in future iterations. Further,
+we locked the sampling probability at 0.5 rather than sampling it as well. By attempting to focus on two parameters, we simplify our analysis further, which seemed reasonable given
+the timeframe of the project. 
 
 \section{Methods}
 
-\section{MLE}
+\subsection{MLE}
 
-We made a few attemps at implementing the MLE, which ended up being a more challenging part of the project
+We made a few attempts at implementing the MLE, which ended up being a more challenging part of the project
 than we expected, mostly due to difficulties in dealing with the data.
 
-Urvi - talk here about your initial pass with a method of moments estimator and some difficulty, that's fine. Maybe
+\textbf{Urvi - talk here about your initial pass with a method of moments estimator and some difficulty, that's fine. Maybe
 give an overview of which packages you also tried for a closed form likelihood, and if you're comfortable and able, 
-why those packages didn't quite work for us.
+why those packages didn't quite work for us.}
 
-In the latest iteration, our MLE implementation is based squarely on the exact linear birth death-process likelihood
-from Phylopomp, that we have ported to Python as faithfully as possible, though this did not resolve our fitting issues. In
-fact, further reading of the `treesimulator` documentation indicates that the proper likelihood actually 
-comes from Stadler and Bonhoffer
+In the latest iteration, our MLE implementation is based squarely on the exact linear birth-death process likelihood
+from \code{phylopomp}\cite{king_phylopomp_2025} that implements the linear birth-death process outlined in \cite{stadler_sampling-through-time_2010}. We have ported the likelihood to Python as faithfully as possible, though this has not resolved our fitting issues. In
+fact, further reading of the \code{treesimulator} documentation indicates that the proper likelihood actually comes from the Stadler and Bonhoeffer paper \cite{stadler_uncovering_2013}, which seems to differ subtly from the exact birth-death likelihood implemented in \code{phylopomp}. This is an area of further refinement for our project.
 
+\subsection{Phylodeep}
 
-\section{Phylodeep}
-
-SANTOSH - model fitting process - talk a little bit here about the models from the Phylodeep paper, 
-specifically the section \textbf{Parameter and model inference using neural networks} and the sections around it. Then, 
-a quick one sentence blurb about why we chose to ignore the summary statistics neural network.
+\textbf{SANTOSH - model fitting process - talk a little bit here about the models from the Phylodeep paper, 
+specifically the section \textit{Parameter and model inference using neural networks} and the sections around it. Then, 
+a quick one sentence blurb about why we chose to ignore the summary statistics neural network.}
 
 \section{Results}
 
 Using the MLE and Phylodeep model together, we found that the Phylodeep model consistently outperformed
-the MLE method in estimating the main parameters ($mu$ and $lambda$) of the Birth-Death trees. Surprisingly,
-the overall tree size does seem to reduce the RMSE for both Phylodeep and MLE methods, but 
+the MLE method in estimating the main parameters ($\mu$ and $\lambda$) of the birth-death trees. Surprisingly,
+the overall tree size seems to reduce the RMSE for both Phylodeep and MLE methods, but 
 not by much.
 
 \begin{figure}
@@ -135,20 +119,20 @@ not by much.
 
 Our naive expectation was that the RMSE would be roughly comparable across these two methods. This, however,
 is not the case. Both methods do seem to improve with more data, but Phylodeep outperforms in terms of
-RMSE across all tree sizes. The Phylodeep methods were trained on median absolute percentage error, not RMSE, and 
-so we cannot simply attribute its excellent performance to evaluation on an ideal target.
+RMSE across all tree sizes. The Phylodeep methods were trained on median absolute percentage error, \textit{not} RMSE, and 
+so we cannot simply attribute its excellent performance to evaluation on the training target.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.9\linewidth]{images/estimation_error_vs_tips.png}
-\caption{Raw error estimates with a quadratic polynomial fit overlaid for $\lambda$ and $\mu$ from MLE and Phylodeep models. There appears to be no relationship with the size of the tree in this context, but the MLE is consistently biased upwards in small sample sizes for $\mu$}
+\caption{Raw error estimates with a second-degree polynomial fit overlaid for $\lambda$ and $\mu$ from MLE and Phylodeep models. There appears to be little relationship between the error and the size of the tree in this context, but the MLE is consistently biased upwards in small sample sizes for $\mu$, and has higher variance across the range of tree sizes.}
 \label{fig:bias_plot}
 \end{figure}
 
 Figure \ref{fig:lambda_mu_scatter} gives a clue as to what might be going on. We see a very 
 sharp black line when we plot our fitted estimates of $\lambda$ against $\mu$. This is a 
-clear indication of some issue in the MLE estimation, possibly independent of the 
-actual likelihood calculation. 
+clear indication of some issues in the MLE estimation. These issues are possibly independent of the 
+actual likelihood calculation and may be related to the identifiability of the parameters.
 
 \begin{figure}
     \centering
@@ -157,39 +141,32 @@ actual likelihood calculation.
     \label{fig:lambda_mu_scatter}
 \end{figure}
 
-When we consider the fitted values of the Phylodeep estimation vs. the MLE estimation, we see
+When we consider the fitted values of the Phylodeep estimation vs. the MLE, we see
 a pattern. Plotting the two parameter estimates together, we see that the MLE estimates often
-seem to settle on a boundary condition for $mu$, while the Phylodeep estimates
-do not have this issue. Further, Phylodeep estimates tend to miss equally both above and 
-below the true parameter. The MLE has this issue in some parts of the curve (see Figure \ref{fig:bias_plot}),
-but we believe this indicates a problem with either our MLE implementation or the alignment 
-of `treesimulator`'s data dgeneration process and the likelihood function outlined by Stadler. 
+seem to settle on a boundary condition for $\mu$, while the Phylodeep estimates
+do not have this issue. Further, Phylodeep estimates tend to err equally above and 
+below the true parameter. The MLE is biased upward for small tree sizes, but becomes more unbiased as tip size increases (see Figure \ref{fig:bias_plot}).
+We believe this indicates a problem with either our MLE implementation or the alignment 
+of \code{treesimulator}'s data generation process and the likelihood function outlined in Stadler (2010).
 
 
 \section{Conclusion}
 
 Our main research question was around the statistical efficiency of these two competing estimators
-with regards to data size (number of tips in the tree) in the context of the Birth-Death tree model.
+with regard to data size (number of tips in the tree) in the context of the birth-death tree model.
 In our initial attempt at answering this question, it appears that Phylodeep outperforms the MLE in 
 most contexts for all tree sizes. 
 
 But we encountered several issues that lead us to not be confident about our conclusions. First,
-our trees are generated exactly in the same manner as the Voznika paper, but it's unclear that the likelihood
-we have identified correctly aligns with this model specification. 
+our trees are generated exactly in the same manner as the Voznica paper, but it's unclear that our likelihood correctly aligns with this model specification. 
 
-\break
-
-% \printbibliography
     
 Solving these issues would allow us to more clearly identify the statistical tradeoffs between the MLE
 and deep learning approaches. In the future, we could expand our analysis to cover cases of slight mis-specification in 
 the deep learning models, for instance around the removal rate and sampling probability assumptions. Slight misalignments
 in the MLE likelihood seem like opportunities as well as issues, as being more precise about our data generating
-process would allow us to identify how robust the pre-trained deep learning models are in cases where the testing trees
-are not exactly aligned with the training data.
+process would allow us to identify how robust the pre-trained deep learning models are in cases where the testing trees are not identically distributed \textit{vis-a-vis} the training data.
 
-\break
-
-% \printbibliography
+\printbibliography
 	
 \end{document}
