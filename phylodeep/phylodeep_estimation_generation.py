@@ -34,10 +34,10 @@ TARGET_TIP_SIZES = [50, 100, 200, 500, 1000]
 TARGET_TIP_SIZES = None  # Set to None to analyze all trees >= 50 tips
 MIN_TIP_SIZE = 50  # PhyloDeep requires at least 50 tips
 
-TREES_DIR = "../phylodynamicsDL/output_trees"
-PARAMS_FILE = "../phylodynamicsDL/all_params.csv"
+TREES_DIR = "./phylopomp_newick"
+PARAMS_FILE = "./phylopomp_true_params.csv"
 SAMPLING_PROBA = 0.5  # Default sampling probability
-OUTPUT_DIR = "../parameter_estimates"
+OUTPUT_DIR = "./parameter_estimates"
 
 # Creating theoutput directory
 os.makedirs(OUTPUT_DIR, exist_ok=True)

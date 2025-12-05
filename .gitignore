@@ -79,3 +79,4 @@ _minted*
 
 ## If you generate PDFs locally but DON’T want them in git, uncomment:
 # *.pdf
+*.nwk
