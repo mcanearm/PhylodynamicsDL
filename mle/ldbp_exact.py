@@ -19,6 +19,11 @@ lambda is per capita births
 The birth-death process in phylopomp is not the same as the one in the Phylodeep
 
 To do this small exercise we needed to put a new model into Phylopomp
+
+regular non linear systems used to be difficult to do likelihood simulation
+Is it worth the effort of finding the likelihood;
+    - generally the answer has been yes
+    - likelihood based inference is efficient from a theoretical perspective, so the question is what is lost through Phylodeep
 """
 
 
