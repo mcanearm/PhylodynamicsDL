@@ -7,6 +7,21 @@ from collections import namedtuple
 Event = namedtuple("Event", ["time", "code", "lineages"])
 
 
+"""
+Notes:
+
+No interval nodes
+We're 99% sure that this process from tree simmulator reflects heterochronous sampling (for this particular birth death model)
+psi = sampling rate
+mu is generally per capita deaths
+lambda is per capita births
+
+The birth-death process in phylopomp is not the same as the one in the Phylodeep
+
+To do this small exercise we needed to put a new model into Phylopomp
+"""
+
+
 def compute_node_ages(tree: Tree):
     """
     Given an ete3 Tree with branch lengths = times,
